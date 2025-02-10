@@ -117,7 +117,15 @@ class TransactionProcessor {
     calculateTimeDifference(dateString) {
         const currentTime = new Date();
         const transactionTime = new Date(dateString);
-        return (currentTime - transactionTime) / (1000 * 60);
+        const difference = currentTime - transactionTime;
+
+        // Calculate difference in minutes
+        const diffInMinutes = difference / (1000 * 60);
+
+        // Optionally, round the difference to the nearest minute
+        const roundedDiffInMinutes = Math.round(diffInMinutes);
+
+        return roundedDiffInMinutes;
     }
 
     async checkExistingTransaction(address, botId) {
@@ -157,9 +165,10 @@ class TransactionProcessor {
                             balance: result.balance,
                             botId: item.botId,
                             createdAt: new Date(),
+                            timeDifference: timeDifference,
                             status: false,
                             botType: item.isExtendedBot ? 'extended' : 'normal',
-			    reason: ""
+			                reason: `This bot stopped within ${timeDifference} minutes`,
                         };
 
                         // Store in MongoDB immediately
