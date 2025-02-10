@@ -1,0 +1,27 @@
+name: 'Convert Files to Markdown'
+description: 'Convert project files to markdown format'
+
+runs:
+  using: "composite"
+  steps:
+    - name: Convert files to Markdown
+      shell: bash
+      run: |
+        find . -type f ! -path '*/\.*' ! -path './markdown-output/*' ! -name '*.md' ! -name '*.zip' ! -name '*.jpg' ! -name '*.png' ! -name '*.gif' | while read file; do
+          output_file="markdown-output/${file%.*}.md"
+          echo "Converting $file to $output_file"
+          
+          mkdir -p "$(dirname "$output_file")"
+          
+          echo "# File: $file" > "$output_file"
+          echo "" >> "$output_file"
+          
+          if [ -s "$file" ]; then
+            pandoc "$file" -f markdown-auto_identifiers -t markdown --wrap=none >> "$output_file" 2>/dev/null || {
+              echo "Content from: $file" >> "$output_file"
+              cat "$file" >> "$output_file"
+            }
+          else
+            echo "Empty file" >> "$output_file"
+          fi
+        done

@@ -1,0 +1,14 @@
+name: 'Generate Documentation'
+description: 'Generate directory structure documentation'
+
+runs:
+  using: "composite"
+  steps:
+    - name: Generate directory structure markdown
+      shell: bash
+      run: |
+        echo "# Project Directory Structure" > markdown-output/directory-structure.md
+        echo "" >> markdown-output/directory-structure.md
+        echo "\`\`\`" >> markdown-output/directory-structure.md
+        tree . -I 'markdown-output|.git|node_modules' >> markdown-output/directory-structure.md
+        echo "\`\`\`" >> markdown-output/directory-structure.md

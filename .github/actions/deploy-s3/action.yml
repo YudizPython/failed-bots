@@ -1,0 +1,21 @@
+name: 'Deploy to S3'
+description: 'Sync files to S3 bucket'
+
+inputs:
+  source-dir:
+    description: 'Source directory to sync from'
+    required: true
+  s3-bucket:
+    description: 'Target S3 bucket'
+    required: true
+  s3-prefix:
+    description: 'S3 bucket prefix (folder)'
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Sync to S3
+      shell: bash
+      run: |
+        aws s3 sync ${{ inputs.source-dir }}/ s3://${{ inputs.s3-bucket }}/${{ inputs.s3-prefix }}/ --delete
