@@ -1,3 +1,4 @@
+// This script has been run every 10 minutes to check for failed transactions on server
 require('dotenv').config();
 const { Connection, PublicKey } = require('@solana/web3.js');
 const { MongoClient } = require('mongodb');

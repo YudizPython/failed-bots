@@ -1,3 +1,4 @@
+"""This script fetches failed bots from MongoDB and updates their status if they are active"""
 import os
 import logging
 
